@@ -1,0 +1,194 @@
+---
+title: "Assignment 1"
+author: "Group 8"
+date: "2024-02-11"
+output:
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+We are hired as a Data Analyst to perform an analysis based on historical data. The key objective is to perform data analysis using R Programming.
+
+This is the data set
+
+``` {r}
+Life.Expectancy.Data <- read.csv("C:/Users/Turjo/OneDrive/Desktop/TRINA STUDY/Third Semester/4066 Analytics/Life Expectancy Data.csv")
+```
+
+Q1. Print the structure of your dataset
+
+``` {r}
+str(Life.Expectancy.Data)
+```
+
+Q2. List the variables in your dataset
+
+``` {r}
+names(Life.Expectancy.Data)
+```
+
+Q3. Print the top 15 rows of your dataset
+
+``` {r}
+head(Life.Expectancy.Data, n = 15)
+```
+
+
+Q4. Write a user defined function using any of the variables from the data set.
+
+``` {r}
+cube_alcohol = function(alcohol){alcohol^3}
+cube_alcohol(Life.Expectancy.Data$Alcohol)
+
+```
+
+
+Q5. Use data manipulation techniques and filter rows based on any logical criteria that exist in your dataset.
+
+``` {r}
+library(tidyverse)
+countryBD = as.data.frame(Life.Expectancy.Data %>% filter(Life.Expectancy.Data$Country == "Bangladesh"))
+view(countryBD)
+
+```
+
+
+Q6. Identify the dependent & independent variables and use reshaping techniques and create a new data frame by joining those variables from your dataset.
+
+``` {r}
+Newtable1 = cbind(Life.Expectancy.Data$Country, Life.Expectancy.Data$Status, Life.Expectancy.Data$Life.expectancy)
+view(Newtable1)
+Newtable3 = cbind(Life.Expectancy.Data$Country, Life.Expectancy.Data$infant.deaths, Life.Expectancy.Data$GDP, Life.Expectancy.Data$Population)
+view(Newtable3)
+Totaltable = merge(Newtable1, Newtable3, by = "V1")
+view(Totaltable)
+```
+
+
+
+Q7. Remove missing values in your dataset.
+
+
+``` {r}
+Life.Expectancy.Data = as.data.frame(na.omit(Life.Expectancy.Data))
+```
+
+
+Q8. Identify and remove duplicated data in your dataset
+
+
+``` {r}
+lifex = as.data.frame(Life.Expectancy.Data %>% distinct(GDP, .keep_all = TRUE) )
+```
+
+
+Q9. Reorder multiple rows in descending order
+
+``` {r}
+lifex2 = as.data.frame(Life.Expectancy.Data %>% arrange( desc(Year)))
+```
+
+Q10. Rename some of the column names in your dataset
+
+``` {r}
+names(Life.Expectancy.Data)[4]= "Life Expectency"
+names(Life.Expectancy.Data)[5] = "Adult Mortality"
+names(Life.Expectancy.Data)[6] = "Infant Deaths"
+
+```
+
+Q11. Add new variables in your data frame by using a mathematical function (for e.g. – multiply an existing column by 2 and add it as a new variable to your data frame)
+
+
+``` {r}
+Life.Expectancy.Data = as.data.frame(Life.Expectancy.Data %>% mutate( Double.Schooling = Life.Expectancy.Data$Schooling * 2))
+
+```
+
+
+Q12. Create a training set using random number generator engine.
+
+``` {r}
+lifex3 = cbind(Life.Expectancy.Data$Country, Life.Expectancy.Data$Year, Life.Expectancy.Data$Status, Life.Expectancy.Data$`Life Expectency`, Life.Expectancy.Data$`Adult Mortality`)
+lifex3 = as.data.frame(lifex3)
+set.seed(1234)
+lifex3 = as.data.frame(lifex3 %>% sample_frac(0.8, replace = FALSE) )
+view(lifex3)
+
+```
+
+
+
+Q13. Print the summary statistics of your dataset
+
+
+``` {r}
+summary(Life.Expectancy.Data)
+
+```
+
+
+Q14. Use any of the numerical variables from the dataset and perform the following statistical functions
+
+Mean
+
+``` {r}
+mean(Life.Expectancy.Data$`Life Expectency`)
+
+```
+
+
+Median
+
+``` {r}
+median(Life.Expectancy.Data$`Life Expectency`)
+```
+
+
+Mode
+
+
+``` {r}
+mode(Life.Expectancy.Data$`Life Expectency`)
+```
+
+
+Range
+
+``` {r}
+range(Life.Expectancy.Data$`Life Expectency`)
+```
+
+
+Q15. Plot a scatter plot for any 2 variables in your dataset
+
+``` {r}
+ggplot(data = Life.Expectancy.Data, aes( x = Life.Expectancy.Data$`Life Expectency`, y = Life.Expectancy.Data$`Infant Deaths`)) + geom_point()
+```
+
+
+Q16. Plot a bar plot for any 2 variables in your dataset
+
+``` {r}
+ggplot(Life.Expectancy.Data, aes(x = Life.Expectancy.Data$`Life Expectency`))+ geom_bar(fill = "darkorchid4")
+```
+
+
+Q17. Find the correlation between any 2 variables by applying least square linear regression mode
+
+``` {r}
+lifeexCorr = cor(Life.Expectancy.Data$percentage.expenditure, Life.Expectancy.Data$GDP, method = "pearson")
+lifeexCorr
+
+```
+
+```{r pressure, echo=FALSE}
+
+```
